@@ -2,92 +2,72 @@ using UnityEngine;
 
 public class HotdogDebugger : MonoBehaviour
 {
-    [Header("Hotdog Data Assets")]
-    public HotdogData classicHotdogData;
-    public HotdogData meatHotdogData;
-    public HotdogData cheeseHotdogData;
-    
-    [Header("Ingredient Data Assets")]
-    public IngredientData picklesData;
-    public IngredientData sweetOnionData;
-    
+    [Header("Базовые хотдоги")]
+    public HotdogDataSO classicData;
+    public HotdogDataSO meatData;
+    public HotdogDataSO cheeseData;
+
+    [Header("Ингредиенты")]
+    public IngredientDataSO picklesData;
+    public IngredientDataSO sweetOnionData;
+
     void Start()
     {
-        // Проверяем, что все необходимые объекты назначены
-        if (!ValidateData())
-        {
-            return;
-        }
-        
+        if (!ValidateData()) return;
+
         Debug.Log("=== ДЕБАГ ИНФОРМАЦИЯ О ХОТДОГАХ ===");
-        
-        // 1. Базовый классический хотдог
-        Hotdog classic = new ClassicHotdog(classicHotdogData);
-        Debug.Log($"Хот-дог {classic.GetName()} ({classic.GetWeight()}г) — {classic.GetCost()}р.");
-        
-        // 2. Классический хотдог с маринованными огурцами
-        Hotdog classicWithPickles = new ClassicHotdog(classicHotdogData);
-        classicWithPickles = new PicklesDecorator(classicWithPickles, picklesData);
-        Debug.Log($"Хот-дог {classicWithPickles.GetName()} ({classicWithPickles.GetWeight()}г) — {classicWithPickles.GetCost()}р.");
-        
-        // 3. Классический хотдог со сладким луком
-        Hotdog classicWithOnion = new ClassicHotdog(classicHotdogData);
-        classicWithOnion = new SweetOnionDecorator(classicWithOnion, sweetOnionData);
-        Debug.Log($"Хот-дог {classicWithOnion.GetName()} ({classicWithOnion.GetWeight()}г) — {classicWithOnion.GetCost()}р.");
-        
-        Debug.Log("\nДополнительная информация:");
-        
-        // 4. Мясной хотдог
-        if (meatHotdogData != null)
-        {
-            Hotdog meat = new MeatHotdog(meatHotdogData);
-            Debug.Log($"Хот-дог {meat.GetName()} ({meat.GetWeight()}г) — {meat.GetCost()}р.");
-        }
-        
-        // 5. Сырный хотдог
-        if (cheeseHotdogData != null)
-        {
-            Hotdog cheese = new CheeseHotdog(cheeseHotdogData);
-            Debug.Log($"Хот-дог {cheese.GetName()} ({cheese.GetWeight()}г) — {cheese.GetCost()}р.");
-        }
-        
-        // 6. Комбинированный: мясной хотдог с огурцами и луком
-        if (meatHotdogData != null)
-        {
-            Hotdog meatCombo = new MeatHotdog(meatHotdogData);
-            meatCombo = new PicklesDecorator(meatCombo, picklesData);
-            meatCombo = new SweetOnionDecorator(meatCombo, sweetOnionData);
-            Debug.Log($"Хот-дог {meatCombo.GetName()} ({meatCombo.GetWeight()}г) — {meatCombo.GetCost()}р.");
-        }
+
+        // Базовый классический
+        Hotdog classic = new ClassicHotdog(classicData.hotdogName, classicData.baseCost, classicData.baseWeight);
+        Debug.Log($"{classic.GetName()} ({classic.GetWeight()}г) — {classic.GetCost()}р.");
+
+        // Классический с огурцами
+        Hotdog withPickles = new PicklesDecorator(
+            new ClassicHotdog(classicData.hotdogName, classicData.baseCost, classicData.baseWeight),
+            picklesData.ingredientName,
+            picklesData.additionalCost,
+            picklesData.additionalWeight
+        );
+        Debug.Log($"{withPickles.GetName()} ({withPickles.GetWeight()}г) — {withPickles.GetCost()}р.");
+
+        // Классический с луком
+        Hotdog withOnion = new SweetOnionDecorator(
+            new ClassicHotdog(classicData.hotdogName, classicData.baseCost, classicData.baseWeight),
+            sweetOnionData.ingredientName,
+            sweetOnionData.additionalCost,
+            sweetOnionData.additionalWeight
+        );
+        Debug.Log($"{withOnion.GetName()} ({withOnion.GetWeight()}г) — {withOnion.GetCost()}р.");
+
+        Debug.Log("Дополнительная информация:");
+
+        // Мясной
+        Hotdog meat = new MeatHotdog(meatData.hotdogName, meatData.baseCost, meatData.baseWeight);
+        Debug.Log($"{meat.GetName()} ({meat.GetWeight()}г) — {meat.GetCost()}р.");
+
+        // Сырный
+        Hotdog cheese = new CheeseHotdog(cheeseData.hotdogName, cheeseData.baseCost, cheeseData.baseWeight);
+        Debug.Log($"{cheese.GetName()} ({cheese.GetWeight()}г) — {cheese.GetCost()}р.");
+
+        // Мясной с двумя ингредиентами
+        Hotdog meatCombo = new MeatHotdog(meatData.hotdogName, meatData.baseCost, meatData.baseWeight);
+        meatCombo = new PicklesDecorator(meatCombo, picklesData.ingredientName, picklesData.additionalCost, picklesData.additionalWeight);
+        meatCombo = new SweetOnionDecorator(meatCombo, sweetOnionData.ingredientName, sweetOnionData.additionalCost, sweetOnionData.additionalWeight);
+        Debug.Log($"{meatCombo.GetName()} ({meatCombo.GetWeight()}г) — {meatCombo.GetCost()}р.");
     }
-    
+
     private bool ValidateData()
     {
-        bool isValid = true;
-        
-        if (classicHotdogData == null)
+        if (classicData == null || meatData == null || cheeseData == null)
         {
-            Debug.LogError("ClassicHotdogData is not assigned!");
-            isValid = false;
+            Debug.LogError("Не все данные хотдогов назначены!");
+            return false;
         }
-        
-        if (picklesData == null)
+        if (picklesData == null || sweetOnionData == null)
         {
-            Debug.LogError("PicklesData is not assigned!");
-            isValid = false;
+            Debug.LogError("Не все данные ингредиентов назначены!");
+            return false;
         }
-        
-        if (sweetOnionData == null)
-        {
-            Debug.LogError("SweetOnionData is not assigned!");
-            isValid = false;
-        }
-        
-        if (isValid)
-        {
-            Debug.Log("All data validated successfully!");
-        }
-        
-        return isValid;
+        return true;
     }
 }

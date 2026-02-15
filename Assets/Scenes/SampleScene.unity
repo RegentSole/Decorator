@@ -148,11 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bb1448b7a792415db755a46e1794eaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotdogDebugger
-  classicHotdogData: {fileID: 11400000, guid: 03341fbef297648508c7624609f2b60d, type: 2}
-  meatHotdogData: {fileID: 11400000, guid: 89ce4f7f4c93f4974b317ada1947cb43, type: 2}
-  cheeseHotdogData: {fileID: 11400000, guid: 196524571ff17495ba107f544ea2961d, type: 2}
-  picklesData: {fileID: 11400000, guid: 39669fffd40b246f7b71bf9e31844a97, type: 2}
-  sweetOnionData: {fileID: 11400000, guid: 8cac736ff9f5e4b40b15d12701edfbf1, type: 2}
+  classicData: {fileID: 11400000, guid: 03341fbef297648508c7624609f2b60d, type: 2}
+  meatData: {fileID: 11400000, guid: 89ce4f7f4c93f4974b317ada1947cb43, type: 2}
+  cheeseData: {fileID: 11400000, guid: 196524571ff17495ba107f544ea2961d, type: 2}
+  picklesData: {fileID: 11400000, guid: bbf317c6bc5fb441c8547f6ae7105879, type: 2}
+  sweetOnionData: {fileID: 11400000, guid: 89de3b27233844eb4b45f4b973acb56d, type: 2}
 --- !u!4 &336488090
 Transform:
   m_ObjectHideFlags: 0

@@ -1,49 +1,10 @@
 public abstract class HotdogDecorator : Hotdog
 {
-    protected Hotdog decoratedHotdog;
-    
-    // Конструктор для декоратора
-    protected HotdogDecorator(Hotdog hotdogToDecorate, IngredientData ingredient) 
-        : base(hotdogToDecorate) // Используем конструктор копирования
-    {
-        decoratedHotdog = hotdogToDecorate;
-        
-        // Добавляем новый ингредиент
-        if (ingredient != null)
-        {
-            AddIngredient(ingredient);
-        }
-    }
-    
-    public override string GetName()
-    {
-        // Используем базовое имя
-        return base.GetName();
-    }
-}
+    protected Hotdog hotdog;
 
-public class PicklesDecorator : HotdogDecorator
-{
-    public PicklesDecorator(Hotdog hotdog, IngredientData picklesData) 
-        : base(hotdog, picklesData)
+    protected HotdogDecorator(Hotdog hotdog, string ingredientName, int additionalCost, int additionalWeight) 
+        : base(ingredientName, additionalCost, additionalWeight) // эти параметры не используются напрямую
     {
-    }
-    
-    public override string GetName()
-    {
-        return $"{base.GetName()} с маринованными огурцами";
-    }
-}
-
-public class SweetOnionDecorator : HotdogDecorator
-{
-    public SweetOnionDecorator(Hotdog hotdog, IngredientData onionData) 
-        : base(hotdog, onionData)
-    {
-    }
-    
-    public override string GetName()
-    {
-        return $"{base.GetName()} со сладким луком";
+        this.hotdog = hotdog;
     }
 }
